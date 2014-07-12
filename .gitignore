@@ -1,0 +1,6 @@
+
+# compiled source #
+*.class
+*.log
+
+/target
