@@ -15,10 +15,11 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.wliu.mr1.fileformat.CustomFileInputFormat;
+import org.wliu.mr1.fileformat.CustomRecordOutputFormat;
+import org.wliu.mr1.record.SampleRowReduceStruct;
 import org.wliu.mr1.record.SampleRowStruct;
 
 /*
@@ -59,13 +60,13 @@ public class RowStructMap extends Configured implements Tool{
     }
  } 
         
- public static class Reduce extends Reducer<Text, SampleRowStruct, Text, IntWritable> {
-	 private Text outkey = null;
-	 private IntWritable outValue = null;
+ public static class Reduce extends Reducer<Text, SampleRowStruct, NullWritable, SampleRowReduceStruct> {
+//	 private Text outkey = null;
+	 private SampleRowReduceStruct outValue = null;
 	  protected void setup(Context context
               ) throws IOException, InterruptedException {
-		 outkey = new Text();
-		 outValue = new IntWritable();
+//		 outkey = new Text();
+		 outValue = new SampleRowReduceStruct();
 	  }
 	  
     public void reduce(Text key, Iterable<SampleRowStruct> values, Context context) 
@@ -77,8 +78,9 @@ public class RowStructMap extends Configured implements Tool{
             }
         }
         
-        outValue.set(max_age);
-        context.write(key, outValue);
+        outValue.name=key.toString();
+        outValue.max_age=max_age;
+        context.write(NullWritable.get(), outValue);
     }
  }
         
@@ -109,15 +111,15 @@ public int run(String[] args) throws Exception {
     job.setMapOutputKeyClass(Text.class);
     job.setMapOutputValueClass(SampleRowStruct.class);
 
-	job.setOutputKeyClass(Text.class);
+	job.setOutputKeyClass(NullWritable.class);
 	job.setOutputValueClass(IntWritable.class);
 	    
 	job.setMapperClass(Map.class);
 	job.setReducerClass(Reduce.class);
 	    
 	job.setInputFormatClass(CustomFileInputFormat.class);
-	job.setOutputFormatClass(TextOutputFormat.class);
-	    
+	job.setOutputFormatClass(CustomRecordOutputFormat.class);
+	conf.set("mapred.textoutputformat.separator", ",");
 	FileInputFormat.addInputPath(job, new Path(input));
 	FileOutputFormat.setOutputPath(job, new Path(output));
 	    
