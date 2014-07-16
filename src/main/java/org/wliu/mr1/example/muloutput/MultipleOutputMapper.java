@@ -27,9 +27,11 @@ public class MultipleOutputMapper extends
 	     mos.write("MOSInt",new Text(tokens[0]), new IntWritable(Integer.parseInt(tokens[1])));  //（第一处）
 	     mos.write("MOSText", new Text(tokens[0]),tokens[2]);
 	     mos.write("MOSText", new Text(tokens[0]),line,tokens[0]+"/");  //（第三处）同时也可写到指定的文件或文件夹中
+	     
+	     context.write(new Text(tokens[0]), new IntWritable(20));
 	   }
 	
 	   protected void cleanup(Context context) throws IOException,InterruptedException {
-	     mos.close();
+		   mos.close();
 	   }
 }
