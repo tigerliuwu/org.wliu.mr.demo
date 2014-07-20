@@ -8,13 +8,15 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.talend.map.input.Row1StructInputFormat;
-import org.talend.map.output.tHDFSOutput_1StructOutputFormat;
+import org.talend.reduce.output.rowKeyAggStruct;
+import org.talend.reduce.output.rowValueAggStruct;
+import org.talend.reduce.output.tHDFSOutput_1StructOutputFormat;
 
 /**
  * @author wliu
  *
  */
-public class SimpleReducerMain extends Configured implements Tool {
+public class SimpleReduceMain extends Configured implements Tool {
 
 	public int run(String[] args) throws Exception {
 		
@@ -31,15 +33,19 @@ public class SimpleReducerMain extends Configured implements Tool {
 	    FileSystem fs = FileSystem.get(conf);
 	    Path out = new Path(output);
 
-	    Job job = new Job(conf,"simple Mapper");
+	    Job job = new Job(conf,"simple Reducer");
 
-	    job.setJarByClass(SimpleReducerMain.class);
+	    job.setJarByClass(SimpleReduceMain.class);
 	    
 
 	    
 	    
 	    
 	    job.setMapperClass(SimpleMapper.class);
+	    job.setMapOutputKeyClass(rowKeyAggStruct.class);
+	    job.setMapOutputValueClass(rowValueAggStruct.class);
+	    
+	    job.setReducerClass(SimpleReducer.class);
 	    
 	    job.setInputFormatClass(Row1StructInputFormat.class);
 	    Row1StructInputFormat.setInputPaths(job, new Path(input));
@@ -49,7 +55,7 @@ public class SimpleReducerMain extends Configured implements Tool {
 	    
 	    fs.delete(out, true);
 	    
-	    job.setNumReduceTasks(0);
+//	    job.setNumReduceTasks(0);
 
 	    System.exit(job.waitForCompletion(true)?0:1);
 	    return 0;
@@ -57,7 +63,7 @@ public class SimpleReducerMain extends Configured implements Tool {
 
 	  public static void main(String[] args) throws Exception {
 
-	    int res = ToolRunner.run(new Configuration(), new SimpleReducerMain(), args);
+	    int res = ToolRunner.run(new Configuration(), new SimpleReduceMain(), args);
 	    System.exit(res); 
 	  }
 

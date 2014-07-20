@@ -3,20 +3,19 @@ package org.talend.map.output;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
-public abstract class HDFSRecordWriter extends RecordWriter<NullWritable, row3Struct> {
+public abstract class HDFSRecordWriter<K, V> extends RecordWriter<K, V> {
 	protected DataOutputStream out;
 
 	public HDFSRecordWriter(DataOutputStream out) {
 		this.out = out;
 	}
 	
-	protected abstract void writeObject(row3Struct value) throws IOException ;
+	protected abstract void writeObject(V value) throws IOException ;
 
-	public void write(NullWritable key, row3Struct value) throws IOException,
+	public void write(K key, V value) throws IOException,
 			InterruptedException {
 
 		boolean nullValue = value == null;
