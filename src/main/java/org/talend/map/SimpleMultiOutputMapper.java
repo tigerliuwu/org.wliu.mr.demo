@@ -5,9 +5,9 @@ import java.io.IOException;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
-import org.talend.custom.input.row1Struct;
-import org.talend.custom.output.row3Struct;
-import org.talend.custom.output.row5Struct;
+import org.talend.map.input.row1Struct;
+import org.talend.map.output.row3Struct;
+import org.talend.map.output.row5Struct;
 
 public class SimpleMultiOutputMapper extends  Mapper<NullWritable, row1Struct, NullWritable, row3Struct> {
 

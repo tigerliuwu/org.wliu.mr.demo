@@ -9,10 +9,10 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.talend.custom.input.Row1StructInputFormat;
-import org.talend.custom.output.row5Struct;
-import org.talend.custom.output.tHDFSOutput_1StructOutputFormat;
-import org.talend.custom.output.tHDFSOutput_2StructOutputFormat;
+import org.talend.map.input.Row1StructInputFormat;
+import org.talend.map.output.row5Struct;
+import org.talend.map.output.tHDFSOutput_1StructOutputFormat;
+import org.talend.map.output.tHDFSOutput_2StructOutputFormat;
 
 /**
  * refer to http://www.cnblogs.com/liangzh/archive/2012/05/22/2512264.html

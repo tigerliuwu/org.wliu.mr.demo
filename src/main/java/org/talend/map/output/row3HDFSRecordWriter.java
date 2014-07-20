@@ -1,4 +1,4 @@
-package org.talend.custom.output;
+package org.talend.map.output;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,14 +7,40 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
-public abstract class HDFSRecordWriter extends RecordWriter<NullWritable, row3Struct> {
+public class row3HDFSRecordWriter extends RecordWriter<NullWritable, row3Struct> {
 	protected DataOutputStream out;
 
-	public HDFSRecordWriter(DataOutputStream out) {
+	public row3HDFSRecordWriter(DataOutputStream out) {
 		this.out = out;
 	}
 	
-	protected abstract void writeObject(row3Struct value) throws IOException ;
+	private void writeObject(row3Struct value) throws IOException {
+		StringBuilder sb = new StringBuilder();
+
+		if (value.ID != null) {
+
+			sb.append(value.ID);
+
+		}
+
+		sb.append(";");
+
+		if (value.name != null) {
+
+			sb.append(value.name);
+
+		}
+
+		sb.append(";");
+
+		if (value.age != null) {
+
+			sb.append(value.age);
+
+		}
+
+		this.out.write(sb.toString().getBytes());
+	}
 
 	public void write(NullWritable key, row3Struct value) throws IOException,
 			InterruptedException {

@@ -1,4 +1,4 @@
-package org.talend.custom.input;
+package org.talend.map.input;
 
 import java.io.DataInput;
 import java.io.DataOutput;

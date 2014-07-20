@@ -1,4 +1,4 @@
-package org.talend.map;
+package org.talend.reduce;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -11,16 +11,15 @@ import org.talend.map.input.Row1StructInputFormat;
 import org.talend.map.output.tHDFSOutput_1StructOutputFormat;
 
 /**
- * refer to http://www.cnblogs.com/liangzh/archive/2012/05/22/2512264.html
  * @author wliu
  *
  */
-public class SimpleMapperMain extends Configured implements Tool {
+public class SimpleReducerMain extends Configured implements Tool {
 
 	public int run(String[] args) throws Exception {
 		
 		String input = "/user/wliu/multiple/input/in/in1.txt";
-		String output = "/user/wliu/multiple/out3/out2";
+		String output = "/user/wliu/multiple/out/out1";
 		Configuration conf = getConf();
 		
 
@@ -34,7 +33,7 @@ public class SimpleMapperMain extends Configured implements Tool {
 
 	    Job job = new Job(conf,"simple Mapper");
 
-	    job.setJarByClass(SimpleMapperMain.class);
+	    job.setJarByClass(SimpleReducerMain.class);
 	    
 
 	    
@@ -58,7 +57,7 @@ public class SimpleMapperMain extends Configured implements Tool {
 
 	  public static void main(String[] args) throws Exception {
 
-	    int res = ToolRunner.run(new Configuration(), new SimpleMapperMain(), args);
+	    int res = ToolRunner.run(new Configuration(), new SimpleReducerMain(), args);
 	    System.exit(res); 
 	  }
 

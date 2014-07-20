@@ -1,4 +1,4 @@
-package org.talend.custom.output;
+package org.talend.map.output;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
