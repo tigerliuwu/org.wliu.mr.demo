@@ -10,6 +10,7 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.talend.map.input.row1Struct;
 
 public class AVROInputFormat extends FileInputFormat<NullWritable, row1Struct> {
@@ -38,7 +39,7 @@ public class AVROInputFormat extends FileInputFormat<NullWritable, row1Struct> {
 			InputSplit split, TaskAttemptContext context) throws IOException,
 			InterruptedException {
 		// TODO Auto-generated method stub
-		return null;
+		return new AvroRecordReader(context, (FileSplit) split);
 	}
 
 
