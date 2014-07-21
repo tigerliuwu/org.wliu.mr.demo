@@ -9,5 +9,10 @@
   		<artifactId>hadoop-core</artifactId>
   		<version>1.0.3</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.apache.avro</groupId>
+  		<artifactId>avro-mapred</artifactId>
+  		<version>1.5.4</version>
+  	</dependency>
   </dependencies>
 </project>
