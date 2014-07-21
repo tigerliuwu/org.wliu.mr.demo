@@ -32,6 +32,8 @@ public class MultiOutputMapper extends  Mapper<NullWritable, row1Struct, rowKeyA
 			mapOut.put(outKey, outValue);
 		}
 		
+		org.talend.map.output.row5Struct row6Value = null;
+		
 		if (value.age!=null && value.age.intValue()>=20) {
 			if (outValue.age_max == null) {
 				outValue.age_max = value.age;
@@ -46,6 +48,15 @@ public class MultiOutputMapper extends  Mapper<NullWritable, row1Struct, rowKeyA
 			} else if (value.age != null) {
 				outValue.age_sum = outValue.age_sum.intValue() + value.age.intValue();
 			}
+		} else {
+			row6Value = new org.talend.map.output.row5Struct();
+			row6Value.name = value.name;
+			row6Value.ID = value.ID;
+			row6Value.sex = value.sex;
+			row6Value.errorMessage = "reject row age < 20";
+		}
+		if (row6Value != null) {
+			outs.write("row6", NullWritable.get(), row6Value);
 		}
 	}
 	
