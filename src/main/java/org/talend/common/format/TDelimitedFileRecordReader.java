@@ -29,7 +29,7 @@ public abstract class TDelimitedFileRecordReader<K, V> extends
 		  
 	  }
 	
-	protected TDelimitedFileRecordReader(JobContext context, FileSplit split,
+	protected TDelimitedFileRecordReader(TaskAttemptContext context, FileSplit split,
 			byte[] rowSeparator) throws IOException {
 
 		this.maxLineLength = Integer.MAX_VALUE;

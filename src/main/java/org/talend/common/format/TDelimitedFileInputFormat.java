@@ -34,7 +34,7 @@ public abstract class TDelimitedFileInputFormat<K, V> extends
 	  }
 	  public abstract 
 	    RecordReader<K,V> getRecordReader(InputSplit split,
-	                                         JobContext context
+	    		TaskAttemptContext context
 	                                        ) throws IOException, 
 	                                                 InterruptedException;
 
@@ -126,7 +126,7 @@ public abstract class TDelimitedFileInputFormat<K, V> extends
 	}
 
 	protected long caculateSkipLength(FileStatus file,
-			JobContext job) throws IOException,InterruptedException {
+			TaskAttemptContext job) throws IOException,InterruptedException {
 		FileSplit split = new FileSplit(file.getPath(), 0, file.getLen(),
 				new String[0]);
 		TDelimitedFileRecordReader<K,V> reader = (TDelimitedFileRecordReader<K,V>) getRecordReader(
