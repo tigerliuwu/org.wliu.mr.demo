@@ -15,19 +15,19 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.talend.map.input.Row1StructInputFormat;
 import org.talend.map.input.row1Struct;
 import org.talend.map.output.row3Struct;
 import org.talend.map.output.tHDFSOutput_1StructOutputFormat;
+import org.talend.samples.base.BasicTalendMapper;
 
 /**
  * @author wliu
  *
  */
-public class MapperContextMain extends Configured implements Tool {
+public class BaseMapperContextMain extends Configured implements Tool {
 	
 
 	private java.util.Properties context_param = new java.util.Properties();
@@ -77,7 +77,7 @@ public class MapperContextMain extends Configured implements Tool {
 						contextIn.close();
 					} else {
 
-						java.io.InputStream contextIn = MapperContextMain.class
+						java.io.InputStream contextIn = BaseMapperContextMain.class
 								.getClassLoader().getResourceAsStream(
 										"contexts/"
 												+ contextFileName);
@@ -180,7 +180,7 @@ public class MapperContextMain extends Configured implements Tool {
 			// call job/subjob with an existing context, like:
 			// --context=production. if without this parameter, there will use
 			// the default context instead.
-			java.io.InputStream inContext = MapperContextMain.class.getClassLoader()
+			java.io.InputStream inContext = BaseMapperContextMain.class.getClassLoader()
 					.getResourceAsStream(
 							"contexts/" + contextStr
 									+ ".properties");
@@ -223,7 +223,7 @@ public class MapperContextMain extends Configured implements Tool {
 			// call job/subjob with an existing context, like:
 			// --context=production. if without this parameter, there will use
 			// the default context instead.
-			java.net.URL inContextUrl = MapperContextMain.class.getClassLoader()
+			java.net.URL inContextUrl = BaseMapperContextMain.class.getClassLoader()
 					.getResource(
 							"contexts/" + contextStr
 									+ ".properties");
@@ -310,7 +310,7 @@ public class MapperContextMain extends Configured implements Tool {
 		}
 	}
 	
-	public static class SimpleMapper extends  Mapper<NullWritable, row1Struct, NullWritable, Writable> {
+	public static class SimpleMapper extends  BasicTalendMapper<NullWritable, row1Struct, NullWritable, Writable> {
 		Log log = LogFactory.getLog(getClass());
 		ContextProperties context;
 		GlobalVar globalMap;
@@ -321,17 +321,34 @@ public class MapperContextMain extends Configured implements Tool {
 			this.globalMap = new GlobalVar(mrContext.getConfiguration());
 		}
 		
-		protected void map(NullWritable key, row1Struct value, 
-	              Context mrContext) throws IOException, InterruptedException {
-			 if (value.sex!=null && value.sex.toLowerCase().equals("male")) {
-				 outValue.name = value.name;
-				 outValue.ID= value.ID;
-				 outValue.age = value.age;
-				 System.out.println("======map context.name=" + context.name +  "=============");
-				 log.info("======map log context.name=" + context.name +  "=============");
-				 mrContext.write(NullWritable.get(), outValue);
-			 }
-		  }
+//		protected void map(NullWritable key, row1Struct value, 
+//	              Context mrContext) throws IOException, InterruptedException {
+//			 if (value.sex!=null && value.sex.toLowerCase().equals("male")) {
+//				 outValue.name = value.name;
+//				 outValue.ID= value.ID;
+//				 outValue.age = value.age;
+//				 System.out.println("======map context.name=" + context.name +  "=============");
+//				 log.info("======map log context.name=" + context.name +  "=============");
+//				 mrContext.write(NullWritable.get(), outValue);
+//			 }
+//		  }
+
+		protected void talendMap(
+				Context mrContext)
+				throws IOException, InterruptedException {
+			while(mrContext.nextKeyValue()) {
+				row1Struct value = mrContext.getCurrentValue();
+				 if (value.sex!=null && value.sex.toLowerCase().equals("male")) {
+					 outValue.name = value.name;
+					 outValue.ID= value.ID;
+					 outValue.age = value.age;
+					 System.out.println("======map context.name=" + context.name +  "=============");
+					 log.info("======map log context.name=" + context.name +  "=============");
+					 mrContext.write(NullWritable.get(), outValue);
+				 }
+			}
+			
+		}
 	}
 
 	public int run(String[] args) throws Exception {
@@ -361,7 +378,7 @@ public class MapperContextMain extends Configured implements Tool {
 
 	    Job job = new Job(conf,this.getClass().getCanonicalName());
 
-	    job.setJarByClass(MapperContextMain.class);
+	    job.setJarByClass(BaseMapperContextMain.class);
 	    
 	    System.out.println("=======in the main part, context.name="+context.name + "===============");
 	    
@@ -390,7 +407,7 @@ public class MapperContextMain extends Configured implements Tool {
 
 	  public static void main(String[] args) throws Exception {
 
-	    int res = ToolRunner.run(new Configuration(), new MapperContextMain(), args);
+	    int res = ToolRunner.run(new Configuration(), new BaseMapperContextMain(), args);
 	    System.exit(res); 
 	  }
 
