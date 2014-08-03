@@ -105,13 +105,11 @@ public class HDFSRecordReader
 				return false;
 			}
 
-			public NullWritable getCurrentKey() throws IOException,
-					InterruptedException {
+			public NullWritable getCurrentKey() {
 				return NullWritable.get();
 			}
 
-			public row1Struct getCurrentValue() throws IOException,
-					InterruptedException {
+			public row1Struct getCurrentValue()  {
 				return value;
 			}
 

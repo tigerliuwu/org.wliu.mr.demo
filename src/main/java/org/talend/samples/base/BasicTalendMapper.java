@@ -3,8 +3,20 @@ package org.talend.samples.base;
 import java.io.IOException;
 
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 public abstract class BasicTalendMapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT> extends Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT> {
+	  protected MultipleOutputs<KEYOUT, VALUEOUT> mOuts = null;
+	  protected void setup(Context context
+              ) throws IOException, InterruptedException {
+		  super.setup(context);
+		  mOuts = new MultipleOutputs<KEYOUT, VALUEOUT>(context);
+	  }
+	  
+	  protected void cleanup(Context context
+              ) throws IOException, InterruptedException {
+		  mOuts.close();
+	  }
 	  /**
 	   * Expert users can override this method for more complete control over the
 	   * execution of the Mapper.

@@ -28,6 +28,7 @@ public class tHDFSOutput_1StructOutputFormat extends FileOutputFormat<NullWritab
 			throws IOException, InterruptedException {
 		Path output = FileOutputFormat.getOutputPath(job);
 		FileSystem fs = output.getFileSystem(job.getConfiguration());
+		
 		System.out.println("==========start==============" +output.toString());
 		String extension = "";
 		Path file = getDefaultWorkFile(job, extension);
