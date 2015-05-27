@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.BlockLocation;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -13,12 +14,14 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionCodecFactory;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
+import org.apache.hadoop.util.StringUtils;
 
 public abstract class TDelimitedFileInputFormat<K, V> extends
 		FileInputFormat<K, V>  {
@@ -41,9 +44,7 @@ public abstract class TDelimitedFileInputFormat<K, V> extends
 	private String inputPath;
 	private int skipLines = 0;
 
-	protected void setInputPath(String inputPath) {
-		this.inputPath = inputPath;
-	}
+	abstract protected String getInputPath();
 
 	protected void setSkipLines(int skipLines) {
 		this.skipLines = skipLines;
@@ -51,6 +52,7 @@ public abstract class TDelimitedFileInputFormat<K, V> extends
 
 	  protected List<FileStatus> listStatus(JobContext job
               ) throws IOException {
+		  job.getConfiguration().set("mapred.input.dir", getInputPath());
 		  List<FileStatus> status = super.listStatus(job);
 		java.util.List<org.apache.hadoop.fs.FileStatus> result = new java.util.ArrayList<org.apache.hadoop.fs.FileStatus>();
 

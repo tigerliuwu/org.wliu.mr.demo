@@ -21,9 +21,9 @@ public abstract class BasicTalendReducer<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
 	  
 	  public void run(Context context) throws IOException, InterruptedException {
 		    setup(context);
-		    while (context.nextKey()) {
-		      reduce(context.getCurrentKey(), context.getValues(), context);
-		    }
+//		    while (context.nextKey()) {
+//		      reduce(context.getCurrentKey(), context.getValues(), context);
+//		    }
 		    talendReduce(context);
 		    cleanup(context);
 	}

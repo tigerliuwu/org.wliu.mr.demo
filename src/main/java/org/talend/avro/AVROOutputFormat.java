@@ -12,14 +12,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.talend.map.input.row1Struct;
 
 public class AVROOutputFormat extends FileOutputFormat<NullWritable, row1Struct> {
-	void configureDataFileWriter(
-			org.apache.avro.file.DataFileWriter<org.apache.avro.generic.GenericRecord> writer,
-			Configuration conf) throws java.io.UnsupportedEncodingException {
 
-		writer.setSyncInterval(conf
-				.getInt(org.apache.avro.mapred.AvroOutputFormat.SYNC_INTERVAL_KEY,
-						org.apache.avro.file.DataFileConstants.DEFAULT_SYNC_INTERVAL));
-	}
 	
 	public final static String EXT = ".avro";
 	@Override

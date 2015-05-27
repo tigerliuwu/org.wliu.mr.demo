@@ -13,12 +13,11 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class tHDFSOutput_2StructOutputFormat extends
 		FileOutputFormat<NullWritable, row5Struct> {
-			private Path getCustomWorkFile(TaskAttemptContext context, String extension) throws IOException{
+			private Path getCustomWorkFile(TaskAttemptContext context, String path, String extension) throws IOException{
 				FileOutputCommitter committer = 
 					      (FileOutputCommitter) getOutputCommitter(context);
 				Path basePath = committer.getWorkPath();
-				System.out.println("committer path ="+basePath + "===============");
-				Path outPath = new Path(new Path("/user/wliu/multiple/out/out2"), getUniqueFile(context, 
+				Path outPath = new Path(new Path(path), getUniqueFile(context, 
 				        getOutputName(context), extension));
 				return outPath;
 			}
@@ -29,12 +28,21 @@ public class tHDFSOutput_2StructOutputFormat extends
 		Path output = FileOutputFormat.getOutputPath(job);
 		FileSystem fs = output.getFileSystem(job.getConfiguration());
 		System.out.println("==========start==============" +output.toString());
-		String extension = "";
-		Path file = getDefaultWorkFile(job, extension);
+//		String extension = "";
+//		Path file = getDefaultWorkFile(job, extension);
 //		fs.delete(output, true);
-		System.out.println("==========start========multipleoutputs======" +file.toString());
-		Path output5 = new Path("/user/wliu/multiple/out/out2");
-		DataOutputStream out = fs.create(getCustomWorkFile(job,""), false);
+//		System.out.println("==========start========multipleoutputs======" +file.toString());
+//		Path output5 = new Path("/user/wliu/multiple/out/out2");
+		
+		DataOutputStream out = null;
+		Path outPath = getCustomWorkFile(job,"/user/wliu/multiple/out/out2","");
+		if(fs.exists(outPath)) {
+			fs.delete(outPath, true);
+		}
+		out = fs.create(outPath, true);
+		
+		
+//		DataOutputStream out = fs.create(getCustomWorkFile(job,""), false);
 		System.out.println("==========end==============");
 
 		return new row5HDFSRecordWriter(out);

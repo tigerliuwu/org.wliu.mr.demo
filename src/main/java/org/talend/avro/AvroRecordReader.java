@@ -133,17 +133,13 @@ public class AvroRecordReader extends RecordReader<NullWritable, row1Struct> {
 		return true;
 	}
 
-	@Override
 	public NullWritable getCurrentKey() throws IOException,
 			InterruptedException {
-		// TODO Auto-generated method stub
 		return NullWritable.get();
 	}
 
-	@Override
 	public row1Struct getCurrentValue() throws IOException,
 			InterruptedException {
-		// TODO Auto-generated method stub
 		return value;
 	}
 	
@@ -151,7 +147,6 @@ public class AvroRecordReader extends RecordReader<NullWritable, row1Struct> {
 		return reader.tell();
 	}
 
-	@Override
 	public float getProgress() throws IOException, InterruptedException {
 		if (start == end) {
 			return 0.0f;
@@ -161,7 +156,6 @@ public class AvroRecordReader extends RecordReader<NullWritable, row1Struct> {
 		}
 	}
 
-	@Override
 	public void close() throws IOException {
 		// TODO Auto-generated method stub
 		if (reader !=null) {

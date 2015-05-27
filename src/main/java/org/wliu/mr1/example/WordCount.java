@@ -19,6 +19,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.talend.hadoop.mapred.lib.MRJobClient1;
 
 /*
  * functionality:
@@ -64,7 +65,7 @@ public int run(String[] args) throws Exception {
 	
 	// init the path
 	String input = "/user/wliu/wordcount/in/in.txt";
-	String output = "/user/wliu/wordcount/out";
+	String output = "/user/wliu/wordcount/word";
 	
 	// init the mr configuration
     Configuration conf = this.getConf();
@@ -90,8 +91,16 @@ public int run(String[] args) throws Exception {
 	    
 	FileInputFormat.addInputPath(job, new Path(input));
 	FileOutputFormat.setOutputPath(job, new Path(output));
-	    
-	job.waitForCompletion(true);
+	
+	
+	MRJobClient1 mrJobClient = new MRJobClient1(job.getConfiguration());
+	mrJobClient.setGroupID(1);
+	mrJobClient.setMRJobIDInGroup(1);
+	mrJobClient.runJob();
+	
+//	JobConf jobconf = new JobConf(getConf());
+	
+//	job.waitForCompletion(true);
 	return 0;
 }
         

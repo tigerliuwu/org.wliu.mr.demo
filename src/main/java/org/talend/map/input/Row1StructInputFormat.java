@@ -11,10 +11,12 @@ import org.talend.common.format.TDelimitedFileInputFormat;
 
 public class Row1StructInputFormat extends TDelimitedFileInputFormat<NullWritable, row1Struct> {
 
-	@Override
+//	public void setInputPaths()
+	protected String getInputPath() {
+		return "/user/wliu/multiple/input/in/in1.txt";
+	}
 	public RecordReader<NullWritable, row1Struct> getRecordReader(InputSplit split,
 			TaskAttemptContext context) throws IOException, InterruptedException {
-		setInputPath("/user/wliu/multiple/input/in/in1.txt");
 		setSkipLines(0);		
 		return new HDFSRecordReader(context, (FileSplit) split, "\n".getBytes());
 	}

@@ -20,7 +20,7 @@ import org.talend.reduce.output.tHDFSOutput_2StructOutputFormat;
  * @author wliu
  *
  */
-public class ReduceMulOutputMixMain extends Configured implements Tool {
+public class CopyOfReduceMulOutputMixMain extends Configured implements Tool {
 
 	public int run(String[] args) throws Exception {
 		
@@ -39,7 +39,7 @@ public class ReduceMulOutputMixMain extends Configured implements Tool {
 
 	    Job job = new Job(conf,this.getClass().getCanonicalName());
 
-	    job.setJarByClass(ReduceMulOutputMixMain.class);
+	    job.setJarByClass(CopyOfReduceMulOutputMixMain.class);
 	    
 
 	    
@@ -52,6 +52,7 @@ public class ReduceMulOutputMixMain extends Configured implements Tool {
 	    job.setReducerClass(SimpleMultiOutputReducer.class);
 	    
 	    job.setInputFormatClass(Row1StructInputFormat.class);
+//	    job.
 //	    Row1StructInputFormat.setInputPaths(job, new Path(input));
 	    
 //	    job.setOutputFormatClass(tHDFSOutput_1StructOutputFormat.class);
@@ -68,8 +69,8 @@ public class ReduceMulOutputMixMain extends Configured implements Tool {
 	    
 	    
 	    fs.delete(out, true);
-//	    fs.delete(reject, true);
-//	    fs.delete(out5, true);
+	    fs.delete(reject, true);
+	    fs.delete(out5, true);
 	    
 //	    job.setNumReduceTasks(0);
 
@@ -79,7 +80,7 @@ public class ReduceMulOutputMixMain extends Configured implements Tool {
 
 	  public static void main(String[] args) throws Exception {
 
-	    int res = ToolRunner.run(new Configuration(), new ReduceMulOutputMixMain(), args);
+	    int res = ToolRunner.run(new Configuration(), new CopyOfReduceMulOutputMixMain(), args);
 	    System.exit(res); 
 	  }
 

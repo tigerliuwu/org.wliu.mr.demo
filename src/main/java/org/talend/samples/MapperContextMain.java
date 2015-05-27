@@ -369,6 +369,9 @@ public class MapperContextMain extends Configured implements Tool {
 	    
 	    job.setMapperClass(SimpleMapper.class);
 	    
+	    job.setOutputKeyClass(NullWritable.class);
+	    job.setOutputValueClass(org.talend.map.input.row1Struct.class);
+	    
 	    job.setInputFormatClass(Row1StructInputFormat.class);
 	    Row1StructInputFormat.setInputPaths(job, new Path(input));
 	    

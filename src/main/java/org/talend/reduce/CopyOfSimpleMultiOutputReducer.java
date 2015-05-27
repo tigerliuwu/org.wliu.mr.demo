@@ -10,7 +10,7 @@ import org.talend.reduce.output.row5Struct;
 import org.talend.reduce.output.rowKeyAggStruct;
 import org.talend.reduce.output.rowValueAggStruct;
 
-public class SimpleMultiOutputReducer extends Reducer<rowKeyAggStruct, rowValueAggStruct, NullWritable, row4Struct> {
+public class CopyOfSimpleMultiOutputReducer extends Reducer<rowKeyAggStruct, rowValueAggStruct, NullWritable, row4Struct> {
 	
 	MultipleOutputs<NullWritable, row4Struct> outs = null;
 	

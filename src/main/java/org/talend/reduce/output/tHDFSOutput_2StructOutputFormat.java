@@ -32,7 +32,15 @@ public class tHDFSOutput_2StructOutputFormat extends
 		Path output = FileOutputFormat.getOutputPath(job);
 		FileSystem fs = output.getFileSystem(job.getConfiguration());
 		
-		DataOutputStream out = fs.create(getCustomWorkFile(job,""), true);
+		DataOutputStream out = null;
+		Path outPath = getCustomWorkFile(job,"");
+		if(fs.exists(outPath)) {
+			fs.delete(outPath, true);
+		} 
+		out = fs.create(outPath, true);
+		
+		
+		
 		System.out.println("=========open a FSDataOutputStream successfully");
 		return new tHDFSOutput_2HDFSRecordWriter(out);
 	}
