@@ -1,6 +1,7 @@
 package org.wliu.mr1.example;
         
 import java.io.IOException;
+import java.security.PrivilegedExceptionAction;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -17,6 +18,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
@@ -63,21 +65,27 @@ public class WordCount extends Configured implements Tool{
 public int run(String[] args) throws Exception {
 	
 	// init the path
-	String input = "/user/wliu/wordcount/in/in.txt";
-	String output = "/user/wliu/wordcount/out";
+	final String input = "/in/in1.txt";
+	final String output = "/user/wliu/wordcount/out";
 	
 	// init the mr configuration
-    Configuration conf = this.getConf();
+    final Configuration conf = this.getConf();
     
-    FileSystem.setDefaultUri(conf, "hdfs://wliu-work:9000");
-    conf.set("mapred.job.tracker", "wliu-work:9001");
+    FileSystem.setDefaultUri(conf, "hdfs://yarn:9000");
+    conf.set("mapreduce.framework.name", "yarn");
+    conf.set("yarn.resourcemanager.address", "yarn:8032");
+    conf.set("mapreduce.app-submission.cross-platform", "true");
     
+    UserGroupInformation ugi = UserGroupInformation
+			.createRemoteUser("wliu");
+    ugi.doAs(new PrivilegedExceptionAction<Void>() {
+		public Void run() throws Exception {
     // remove the output directory
     FileSystem fs = FileSystem.get(conf);
     fs.delete(new Path(output), true);
     
     
-    Job job = new Job(conf, "wordcount");
+    Job job = Job.getInstance(conf, "wordcount"); //new Job(conf, "wordcount");
 
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(IntWritable.class);
@@ -92,6 +100,9 @@ public int run(String[] args) throws Exception {
 	FileOutputFormat.setOutputPath(job, new Path(output));
 	    
 	job.waitForCompletion(true);
+	return null;
+		}
+		});
 	return 0;
 }
         
