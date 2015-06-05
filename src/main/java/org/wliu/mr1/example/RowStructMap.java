@@ -106,7 +106,7 @@ public int run(String[] args) throws Exception {
     fs.delete(new Path(output), true);
     
     
-    Job job = new Job(conf, "wordcount");
+    Job job = Job.getInstance(conf, "wordcount");
     
     job.setMapOutputKeyClass(Text.class);
     job.setMapOutputValueClass(SampleRowStruct.class);

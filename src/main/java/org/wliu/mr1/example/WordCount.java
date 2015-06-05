@@ -65,8 +65,8 @@ public class WordCount extends Configured implements Tool{
 public int run(String[] args) throws Exception {
 	
 	// init the path
-	final String input = "/in/in1.txt";
-	final String output = "/user/wliu/wordcount/out";
+	final String input = "/user/wliu/input/in";
+	final String output = "/user/wliu/wordcount/out1";
 	
 	// init the mr configuration
     final Configuration conf = this.getConf();
@@ -74,6 +74,7 @@ public int run(String[] args) throws Exception {
     FileSystem.setDefaultUri(conf, "hdfs://yarn:9000");
     conf.set("mapreduce.framework.name", "yarn");
     conf.set("yarn.resourcemanager.address", "yarn:8032");
+    conf.set("yarn.resourcemanager.scheduler.address", "yarn:8030");
     conf.set("mapreduce.app-submission.cross-platform", "true");
     
     UserGroupInformation ugi = UserGroupInformation
@@ -85,7 +86,7 @@ public int run(String[] args) throws Exception {
     fs.delete(new Path(output), true);
     
     
-    Job job = Job.getInstance(conf, "wordcount"); //new Job(conf, "wordcount");
+    Job job = Job.getInstance(conf, "word count"); //new Job(conf, "wordcount");
 
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(IntWritable.class);
