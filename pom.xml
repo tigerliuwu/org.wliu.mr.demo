@@ -44,5 +44,12 @@
   		<artifactId>avro-mapred</artifactId>
   		<version>1.7.4</version>
   	</dependency>
+  	<dependency>
+    <groupId>jdk.tools</groupId>
+    <artifactId>jdk.tools</artifactId>
+    <version>1.7</version>
+    <scope>system</scope>
+    <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+</dependency>
   </dependencies>
 </project>
