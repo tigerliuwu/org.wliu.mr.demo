@@ -1,7 +1,0 @@
-100;wliu;33;Male
-101;wwang;22;Male
-102;wzhao;34;Female
-104;wluo;21;male
-105;txu;23;female
-107;tliu;11;female
-110;lucy;25;female
