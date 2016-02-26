@@ -14,8 +14,9 @@ step 2： 使用-libjars package_name.jar 作为program arguments运行<br>
 ##测试
 使用mrunit进行测试，所有相关的测试代码都放在src/test/java文件夹下。
 
-###需要的jar
-maven dependency:
+### mrunit测试
+
+maven dependency
 
   	<dependency>
   		<groupId>org.apache.mrunit</groupId>
@@ -24,6 +25,35 @@ maven dependency:
   		<classifier>hadoop2</classifier>
 	</dependency>
 在maven repository搜索mrunit会找到两个hadoop1和hadoop2两种支持，使用classifier进行区分。
+
+优点：
+1）针对map和reduce的输入输出进行校验
+2）无需启动hadoop集群
+缺点：
+1）目前没找到指定本地文件作为输入和输出数据源的办法
+2）目前没找到指定inputformat和outputformat（好像有，目前我还没实现）
+
+例子：
+1）WordCountTest
+
+### minicluster
+
+maven dependency:
+
+  	<dependency>
+		<groupId>org.apache.hadoop</groupId>
+		<artifactId>hadoop-minicluster</artifactId>
+		<version>${hadoop.version}</version>
+		<type>jar</type>
+		<scope>test</scope>
+	</dependency>
+
+优点：
+1. 可以在本地模拟启动多个节点的cluster
+2. 可以测试一个完整的job
+
+例子：
+1）BasicMRTest
 
 ###使用Junit4测试框架
 导入org.junit里面的类进行junit测试
