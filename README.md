@@ -7,9 +7,9 @@
 
 ###remote模式
 将代码发送到集群的各个计算任务节点运行对应的mapper和reducer代码。<br>
-step 1： 将该项目package成一个jar<br>
-step 2： 使用ToolRunner.run()调用继承(extends)Configured和实现了Tool的java类<br>
-step 2： 使用-libjars package_name.jar 作为program arguments运行<br>
+- step 1： 将该项目package成一个jar<br>
+- step 2： 使用ToolRunner.run()调用继承(extends)Configured和实现了Tool的java类<br>
+- step 2： 使用-libjars package_name.jar 作为program arguments运行<br>
 
 ##测试
 使用mrunit进行测试，所有相关的测试代码都放在src/test/java文件夹下。
@@ -17,13 +17,14 @@ step 2： 使用-libjars package_name.jar 作为program arguments运行<br>
 ### mrunit测试
 
 maven dependency
-
+```XML
   	<dependency>
   		<groupId>org.apache.mrunit</groupId>
   		<artifactId>mrunit</artifactId>
   		<version>1.1.0</version>
   		<classifier>hadoop2</classifier>
 	</dependency>
+```
 在maven repository搜索mrunit会找到两个hadoop1和hadoop2两种支持，使用classifier进行区分。
 
 优点：
